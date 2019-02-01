@@ -8,3 +8,8 @@ class Net:
         self._channels = channels
         self._graph = tf.Graph()
         primaryCaps = Layer(8, 32, with_routing=True)
+
+
+def loss(m_plus, m_minus, length):
+    max_len = tf.square(tf.maximum(0., m_plus - length))
+    max_r = tf.square(tf.maximum(0., length - m_minus))
