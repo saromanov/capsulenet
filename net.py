@@ -7,6 +7,7 @@ class Net:
         self._width = width
         self._height = height
         self._channels = channels
+        self._reg_scale = 0.392
         self._graph = tf.Graph()
         primaryCaps = Layer(8, 32, with_routing=True)
     
@@ -16,6 +17,7 @@ class Net:
         max_len = reshape(max_len, (cfg.batch_size, -1))
         max_r = reshape(max_r, (cfg.batch_size, -1))
         L_c = T_c * max_len + lambda_val * (1 - T_c) * max_r
+        return self._margin_loss(L_c) + self._reconstruction_loss(L_c) * self._reg_scale
     
     def _margin_loss(self, X):
         return tf.reduce_mean(tf.reduce_sum(X, axis=1))
