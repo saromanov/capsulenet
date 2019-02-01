@@ -9,11 +9,14 @@ class Net:
         self._channels = channels
         self._graph = tf.Graph()
         primaryCaps = Layer(8, 32, with_routing=True)
-
-
-def loss(m_plus, m_minus, length):
-    max_len = tf.square(tf.maximum(0., m_plus - length))
-    max_r = tf.square(tf.maximum(0., length - m_minus))
-    max_len = reshape(max_len, (cfg.batch_size, -1))
-    max_r = reshape(max_r, (cfg.batch_size, -1))
+    
+    def loss(m_plus, m_minus, length, T_c):
+        max_len = tf.square(tf.maximum(0., m_plus - length))
+        max_r = tf.square(tf.maximum(0., length - m_minus))
+        max_len = reshape(max_len, (cfg.batch_size, -1))
+        max_r = reshape(max_r, (cfg.batch_size, -1))
+        L_c = T_c * max_len + lambda_val * (1 - T_c) * max_r
+    
+    def _margin_loss(self, X):
+        return tf.reduce_mean(tf.reduce_sum(X, axis=1))
     
