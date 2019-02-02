@@ -23,6 +23,6 @@ class Net:
         return tf.reduce_mean(tf.reduce_sum(X, axis=1))
     
     def _reconstruction_loss(self, X):
-        orgin = reshape(X, (batch_size, -1)
+        orgin = reshape(X, (batch_size, -1))
         return tf.reduce_mean(tf.square(self.decoded - orgin))
     
